@@ -85,13 +85,15 @@ class Promotion extends Model
             return 0.0;
         }
 
-        $percentCents = (int) round($subtotal * 100) * $this->discount_percent;
-        $discount = intdiv($percentCents, 100 * 100);
+        $subtotalCents = (int) round($subtotal * 100);
+
+        // percent/100 of the subtotal, kept in cents.
+        $discountCents = intdiv($subtotalCents * $this->discount_percent, 100);
 
         $cap = $this->maximum_discount !== null
             ? (int) round((float) $this->maximum_discount * 100)
             : PHP_INT_MAX;
 
-        return min($discount, $cap) / 100;
+        return (float) (min($discountCents, $cap) / 100);
     }
 }

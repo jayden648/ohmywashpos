@@ -12,11 +12,16 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      *
-     * No demo accounts are created on purpose. Use
-     * `php artisan app:create-admin` to create the first administrator.
+     * Safe to run repeatedly: every seeder matches on natural keys such as
+     * the service slug or the promotion code, so existing rows are updated
+     * rather than duplicated.
      */
     public function run(): void
     {
-        //
+        $this->call([
+            UserSeeder::class,
+            ServiceCatalogSeeder::class,
+            ReferenceDataSeeder::class,
+        ]);
     }
 }

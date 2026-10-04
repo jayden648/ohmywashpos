@@ -15,6 +15,17 @@ use App\Models\Service;
 class OrderCalculator
 {
     /**
+     * Convert integer cents back to a Rupiah amount.
+     *
+     * The explicit float cast matters: `$int / 100` returns an int in PHP
+     * when the division is exact, which would then be stored as an integer.
+     */
+    private function centsToRupiah(int $cents): float
+    {
+        return (float) ($cents / 100);
+    }
+
+    /**
      * Price a set of requested services straight from the database.
      *
      * @param  array<int, array{service_id: int|string, quantity: int}>  $lines
@@ -58,20 +69,20 @@ class OrderCalculator
                 }
 
                 $unitPriceCents = (int) round((float) $service->price * 100);
-                $subtotalCents = $unitPriceCents * $quantity;
+                $lineSubtotalCents = $unitPriceCents * $quantity;
 
                 $priced[] = [
                     'service' => $service,
                     'quantity' => $quantity,
-                    'unit_price' => $unitPriceCents / 100,
-                    'subtotal' => $subtotalCents / 100,
+                    'unit_price' => $this->centsToRupiah($unitPriceCents),
+                    'subtotal' => $this->centsToRupiah($lineSubtotalCents),
                 ];
 
-                $subtotalCents += $subtotalCents;
+                $subtotalCents += $lineSubtotalCents;
             }
         }
 
-        $subtotal = $subtotalCents / 100;
+        $subtotal = $this->centsToRupiah($subtotalCents);
 
         $discountCents = 0;
 
@@ -88,11 +99,11 @@ class OrderCalculator
 
         return [
             'lines' => $priced,
-            'subtotal' => $subtotalCents / 100,
-            'discount' => $discountCents / 100,
-            'additional_fee' => $additionalFeeCents / 100,
-            'tax' => $taxCents / 100,
-            'total' => $totalCents / 100,
+            'subtotal' => $subtotal,
+            'discount' => $this->centsToRupiah($discountCents),
+            'additional_fee' => $this->centsToRupiah($additionalFeeCents),
+            'tax' => $this->centsToRupiah($taxCents),
+            'total' => $this->centsToRupiah($totalCents),
         ];
     }
 }

@@ -1,3 +1,6 @@
-@props(['disabled' => false])
+@props(['value' => null])
 
-<input @disabled($disabled) {{ $attributes->merge(['class' => 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm']) }}>
+<input
+    @if ($attributes->has('type') && $attributes->get('type') === 'checkbox') @else value="{{ $value }}" @endif
+    {{ $attributes->merge(['class' => 'omw-input']) }}
+/>
