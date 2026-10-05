@@ -11,7 +11,8 @@
 
 <nav aria-label="Navigasi utama" class="flex h-full flex-col bg-ink text-white">
     <div class="flex items-center px-4 py-5">
-        <x-application-logo :dark="true" />
+            {{-- Sidebar: compact, on a light tile against the black background. --}}
+            <x-application-logo :dark="true" size="w-36" />
     </div>
 
     <p class="px-4 pb-5 text-[11px] leading-relaxed text-gray-400">

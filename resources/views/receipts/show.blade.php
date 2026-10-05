@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Struk {{ $order->order_number }} — OhMyWash</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/ohmywash-logo.png') }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100 py-6">

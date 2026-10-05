@@ -1,22 +1,33 @@
-{{-- OhMyWash brand mark. Swap this component for an <img> of the official
-     logo asset as soon as one is available. --}}
-<span {{ $attributes->merge(['class' => 'inline-flex items-center gap-2.5']) }}>
-    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand text-ink">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
-             stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true">
-            <path d="M12 2.5c1.6 3.4 5.5 4.4 5.5 9a5.5 5.5 0 1 1-11 0c0-2.2 1.3-3.6 2.6-4.8.2 1.6.9 2.4 1.8 2.6-.3-2.6.2-4.9 1.1-6.8Z" />
-        </svg>
+{{--
+    The official OhMyWash logo.
+
+    One single source of truth: public/images/ohmywash-logo.png, served as a
+    static asset so it never depends on a Vite-generated filename.
+
+    $dark places the logo on a light tile. The artwork contains a black shoe
+    glyph, so it would otherwise disappear against the black sidebar and the
+    dark hero pages. The PNG itself is never recoloured, filtered or overlaid.
+--}}
+@props([
+    'dark' => false,
+    'withTagline' => false,
+    'size' => 'w-36',
+])
+
+<span class="inline-flex flex-col items-center">
+    <span class="{{ $dark ? 'rounded-xl bg-white px-3 py-2' : '' }}">
+        <img
+            {{ $attributes->merge(['class' => 'h-auto object-contain '.$size]) }}
+            src="{{ asset('images/ohmywash-logo.png') }}"
+            alt="OhMyWash"
+            width="1999"
+            height="787"
+        >
     </span>
 
-    <span class="leading-none">
-        <span class="block text-lg font-extrabold tracking-tight {{ ($dark ?? false) ? 'text-white' : 'text-ink' }}">
-            OH<span class="{{ ($dark ?? false) ? 'text-brand' : 'text-brand-dark' }}">MY</span>WASH
+    @if ($withTagline)
+        <span class="mt-2 text-[10px] font-medium uppercase tracking-widest {{ $dark ? 'text-gray-400' : 'text-gray-500' }}">
+            Shoe Laundry
         </span>
-
-        @if (($withTagline ?? false))
-            <span class="mt-1 block text-[10px] font-medium uppercase tracking-widest {{ ($dark ?? false) ? 'text-gray-400' : 'text-gray-500' }}">
-                Shoe Laundry
-            </span>
-        @endif
-    </span>
+    @endif
 </span>

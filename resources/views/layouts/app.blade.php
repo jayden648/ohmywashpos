@@ -7,6 +7,8 @@
 
     <title>{{ $title ?? config('app.name', 'OhMyWash POS') }}</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/ohmywash-logo.png') }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-gray-50">
@@ -23,7 +25,8 @@
                 </svg>
             </button>
 
-            <x-application-logo />
+            {{-- Mobile header sits on white, so no tile is needed. --}}
+            <x-application-logo size="w-28" />
         </div>
 
         {{-- Backdrop for the mobile drawer --}}

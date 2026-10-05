@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OhMyWash POS — Sistem Laundry Sepatu</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/ohmywash-logo.png') }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-ink">
     <div class="mx-auto flex min-h-screen max-w-4xl flex-col justify-center px-5 py-12">
         <div class="text-center">
             <div class="mb-4 flex justify-center">
-                <x-application-logo :dark="true" />
+                <x-application-logo :dark="true" size="w-64" />
             </div>
 
             <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
