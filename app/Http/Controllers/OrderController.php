@@ -10,6 +10,7 @@ use App\Http\Requests\AdvanceOrderStatusRequest;
 use App\Http\Requests\StoreQualityControlRequest;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
+use App\Models\QualityControl;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,7 +109,11 @@ class OrderController extends Controller
     {
         $checks = QualityCheck::fromInput($request->input('checks', []));
 
-        $order->qualityControl()->updateOrCreate(
+        // Queried through the model rather than the relation: the
+        // qualityControl() relation is a latestOfMany(), and adding an
+        // order_id lookup on top of it produces a duplicate, unqualified
+        // "order_id" predicate that MySQL rejects as ambiguous.
+        QualityControl::updateOrCreate(
             ['order_id' => $order->id],
             [
                 'checked_by' => $request->user()->id,

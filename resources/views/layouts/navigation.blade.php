@@ -41,6 +41,12 @@
         <div class="border-t border-white/10 px-4 py-4">
             <p class="truncate text-sm font-semibold text-white">{{ $user->name }}</p>
             <p class="mt-0.5 text-xs text-gray-400">{{ $user->role->label() }}</p>
+
+            {{-- Signing out is a POST so the session is invalidated server-side. --}}
+            <form method="POST" action="{{ route('logout') }}" class="mt-3">
+                @csrf
+                <button type="submit" class="omw-sidebar-link w-full">Keluar</button>
+            </form>
         </div>
     @endif
 </nav>

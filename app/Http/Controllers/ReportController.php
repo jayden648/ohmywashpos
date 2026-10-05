@@ -47,9 +47,14 @@ class ReportController extends Controller
             ->where('paid_at', '>=', $since)
             ->groupBy('method')
             ->get()
+            // The model casts `method` to a PaymentMethod enum, so the raw
+            // value is already resolved here; calling tryFrom() on it again
+            // would pass an enum where a string is expected.
             ->map(fn ($row): array => [
-                'method' => PaymentMethod::tryFrom($row->method),
-                'label' => PaymentMethod::tryFrom($row->method)?->label() ?? $row->method,
+                'method' => $row->method,
+                'label' => $row->method instanceof PaymentMethod
+                    ? $row->method->label()
+                    : (PaymentMethod::tryFrom((string) $row->method)?->label() ?? (string) $row->method),
                 'count' => (int) $row->aggregate,
                 'total' => (float) $row->total,
             ]);
