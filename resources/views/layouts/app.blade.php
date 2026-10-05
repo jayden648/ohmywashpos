@@ -10,7 +10,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-gray-50">
-    <div x-data="{ sidebarOpen: false }" class="min-h-screen">
+    {{-- Desktop is a flex row: sidebar beside the content.
+         Mobile keeps the fixed drawer and stacks the content normally. --}}
+    <div x-data="{ sidebarOpen: false }" class="min-h-screen lg:flex">
 
         {{-- Mobile top bar --}}
         <div class="sticky top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 lg:hidden">
@@ -29,16 +31,20 @@
              x-transition.opacity.duration.200ms
              class="fixed inset-0 z-40 bg-black/50 lg:hidden" aria-hidden="true"></div>
 
-        {{-- Sidebar: a drawer on mobile, a static column on desktop --}}
+        {{-- Sidebar: fixed drawer on mobile, sticky flex column on desktop.
+                 lg:static previously left it as a static block, which pushed
+                 the content below it instead of sitting beside it.
+                 lg:inset-auto drops the drawer's mobile offsets on desktop. --}}
         <aside class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full transition-transform duration-200
-                      lg:static lg:z-auto lg:w-64 lg:translate-x-0"
+                      lg:sticky lg:top-0 lg:inset-auto lg:z-auto lg:h-screen lg:w-64 lg:shrink-0
+                      lg:self-start lg:translate-x-0"
                :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
                aria-label="Sidebar">
             @include('layouts.navigation')
         </aside>
 
-        {{-- Main content --}}
-        <div class="lg:col-span-1 lg:pl-0">
+        {{-- Main content: takes the remaining width, never under the sidebar --}}
+        <div class="lg:min-w-0 lg:flex-1">
             <header class="hidden border-b border-gray-200 bg-white px-6 py-5 lg:block">
                 <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-4">
                     <div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
 use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
 use App\Services\CustomerCodeGenerator;
@@ -55,15 +56,25 @@ class CustomerController extends Controller
             ->with('status', "Pelanggan {$customer->customer_code} tersimpan.");
     }
 
+    /**
+     * Settled orders only; cancelled ones must not count towards history.
+     *
+     * The closure receives an Order builder, not a Customer builder, so a
+     * Customer scope is not in scope here - the condition is written out.
+     *
+     * @var callable(\Illuminate\Database\Eloquent\Builder): void $countable
+     */
     public function show(Customer $customer): View
     {
         $this->authorize('view', $customer);
 
+        $countable = fn ($query) => $query->where('status', '!=', OrderStatus::Cancelled->value);
+
         $customer->loadCount([
             'orders',
-            'orders as payable_orders_count' => fn ($query) => $query->countableOrders(),
+            'orders as payable_orders_count' => $countable,
         ])->loadSum([
-            'orders as total_spending' => fn ($query) => $query->countableOrders(),
+            'orders as total_spending' => $countable,
         ], 'total');
 
         $orders = $customer->orders()->latest()->paginate(10);
