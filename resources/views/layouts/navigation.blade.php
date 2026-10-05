@@ -1,5 +1,8 @@
 @php
-    $user = auth()->user();
+    // Auth::user() keeps the type resolvable for static analysers; the
+    // auth()->user() helper returns an AuthManager that only proxies
+    // `user` through __call.
+    $user = Illuminate\Support\Facades\Auth::user();
 
     // Presentation only: routes are also protected by middleware/policies.
     $visibleItems = collect(App\Support\Navigation::items())

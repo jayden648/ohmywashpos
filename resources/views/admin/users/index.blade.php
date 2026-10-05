@@ -66,7 +66,7 @@
                             <tr>
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900">
                                     {{ $user->name }}
-                                    @if ($user->is(auth()->user()))
+                                    @if ($user->is(\Illuminate\Support\Facades\Auth::user()))
                                         <span class="ms-1 text-xs text-gray-500">({{ __('you') }})</span>
                                     @endif
                                 </td>
@@ -91,7 +91,8 @@
                                             </button>
                                         </form>
                                     @else
-                                        @php($reason = Gate::getPolicyFor(auth()->user(), \App\Models\User::class)?->deleteReason(auth()->user(), $user))
+                                        @php($currentUser = \Illuminate\Support\Facades\Auth::user())
+                                        @php($reason = Gate::getPolicyFor($currentUser, \App\Models\User::class)?->deleteReason($currentUser, $user))
                                         @if ($reason && ! $reason->allowed())
                                             <span class="ms-3 text-xs text-gray-400">{{ $reason->message() }}</span>
                                         @endif
