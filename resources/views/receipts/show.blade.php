@@ -21,10 +21,17 @@
 
     <div class="omw-print-area mx-auto max-w-sm rounded-2xl bg-white p-6 shadow-card">
         <header class="mb-4 border-b-2 border-ink pb-3 text-center">
-            <p class="text-2xl font-extrabold tracking-tight text-ink">
-                OH<span class="text-brand-dark">MY</span>WASH
-            </p>
-            <p class="mt-1 text-[11px] text-gray-500">Bukan hanya bersih, tapi terlahir kembali dengan elegansi</p>
+            {{-- Official OhMyWash logo, served as a static asset (not via Vite).
+                 w-48 with h-auto keeps the 1999x787 artwork proportional;
+                 object-contain guards against any distortion. --}}
+            <img
+                src="{{ asset('images/ohmywash-logo.png') }}"
+                alt="OhMyWash"
+                width="1999"
+                height="787"
+                class="mx-auto block h-auto w-48 object-contain"
+            >
+            <p class="mt-2 text-[11px] text-gray-500">Bukan hanya bersih, tapi terlahir kembali dengan elegansi</p>
         </header>
 
         <dl class="space-y-1.5 text-xs">

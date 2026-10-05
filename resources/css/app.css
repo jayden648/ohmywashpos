@@ -139,6 +139,20 @@
         max-width: 100% !important;
     }
 
+    /* Keep the yellow branding and the logo crisp on paper. Browsers strip
+       background colours from prints unless colour adjustment is forced. */
+    .omw-print-area,
+    .omw-print-area * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Never let the receipt logo be squeezed or cropped by a paper size. */
+    .omw-print-area img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
     @page {
         margin: 8mm;
     }
