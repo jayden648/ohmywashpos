@@ -1,0 +1,14 @@
+===GIT-STATUS=== 
+## main
+?? _p1.txt
+?? _r1.bat
+ 
+===TRACKED-JUNK=== 
+no-tracked-junk 
+ 
+===LOOSE-JUNK=== 
+_p1.txt
+_v_serve.txt
+_v_serve_err.txt
+_r1.bat
+DONE 
