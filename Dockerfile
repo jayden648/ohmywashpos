@@ -21,7 +21,7 @@ COPY public/ public/
 RUN npm run build
 
 # --------------------------------------------------------------- runtime
-FROM php:8.3-fpm-alpine AS runtime
+FROM php:8.4-fpm-alpine AS runtime
 
 # System packages: nginx + supervisor keep one process tree on Render free,
 # mysql-client gives `mysqladmin ping` for the optional DB wait loop.
