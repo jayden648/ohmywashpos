@@ -1,19 +1,10 @@
 services:
   - type: web
     name: ohmywashpos
-    runtime: php
+    runtime: docker
+    dockerfilePath: ./Dockerfile
     plan: free
-    buildCommand: |-
-      composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-      php artisan key:generate --force
-      php artisan storage:link
-      php artisan migrate --force
-      npm ci
-      npm run build
-      php artisan config:cache
-      php artisan route:cache
-      php artisan view:cache
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    healthCheckPath: /up
     envVars:
       - key: APP_NAME
         value: OhMyWash POS
@@ -32,20 +23,26 @@ services:
       - key: DB_PORT
         value: 3306
       - key: DB_DATABASE
-        value: ohmywashpos
+        sync: false
       - key: DB_USERNAME
         sync: false
       - key: DB_PASSWORD
+        sync: false
+      # Aiven CA certificate (PEM content, pasted as a Render secret).
+      # The container entrypoint writes it to /tmp/aiven-ca.pem and points
+      # PDO (MYSQL_ATTR_SSL_CA) at it. Never commit this value.
+      - key: DB_SSL_CA
         sync: false
       - key: SESSION_DRIVER
         value: database
       - key: CACHE_STORE
         value: database
       - key: QUEUE_CONNECTION
-        value: database
+        value: sync
       - key: LOG_CHANNEL
-        value: stack
+        value: stderr
       - key: LOG_LEVEL
         value: warning
       - key: MAIL_MAILER
         value: log
+

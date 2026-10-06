@@ -59,8 +59,17 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // Optional MySQL SSL (Aiven requires ssl-mode=REQUIRED).
+            //
+            // - DB_SSL_CA: PEM content of the CA certificate, supplied as a
+            //   Render secret. The container entrypoint writes it to a temp
+            //   file and exports MYSQL_ATTR_SSL_CA with the file path.
+            //   Leave both unset for local development (plain TCP).
+            // - DB_SSL_VERIFY: when "false", the server certificate is not
+            //   verified (handy for debugging only). Defaults to verifying.
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                Mysql::ATTR_SSL_VERIFY_SERVER_CERT => env('DB_SSL_VERIFY', 'true') === 'false' ? false : null,
             ]) : [],
         ],
 
