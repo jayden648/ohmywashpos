@@ -1,0 +1,2 @@
+; Production-facing PHP floor for OhMyWash POS (Laravel 13 requires PHP 8.3+).
+8.3
